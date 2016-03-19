@@ -8,10 +8,14 @@ import java.util.Comparator;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
+
 
 
 
@@ -93,40 +97,40 @@ public class JavaApplication5 {
         csvWriter.close();
     }
     
-    public static void TopN(CSVReader csvReadr) throws IOException
+    public static void TopN(CSVReader csvReadr,int n) throws IOException
     {
         String rows[];
         
         int count=0;
         
-        System.out.println("The top 5 are");
+        System.out.println("The top "+n+" are");
         
         while((rows = csvReadr.readNext()) != null) 
         {
-             if(count<5)
+             if(count<n)
                  System.out.println(rows[0]+" "+rows[1]+" "+rows[2]+" "+rows[3]+" "+rows[4]+" "+rows[5]+" "+
                          rows[6]);
              count++;
              
-             if(count>5)
+             if(count>n)
                  break;
         }
         csvReadr.close();
     }
     
-    public static void BotN(CSVReader csvRead) throws IOException
+    public static void BotN(CSVReader csvRead,int tot, int n) throws IOException
     {
       int count=0;
       
       String row[];
         
-        System.out.println("The bottom 2 are");
+        System.out.println("The bottom "+n+" are");
         
         count=0;
         
         while((row = csvRead.readNext()) != null) 
         {
-             if(count>=8)
+             if(count>=(tot-n))
                  System.out.println(row[0]+" "+row[1]+" "+row[2]+" "+row[3]+" "+row[4]+" "+row[5]+" "+
                          row[6]);
              count++;
@@ -134,28 +138,28 @@ public class JavaApplication5 {
         
        csvRead.close();
     }
-    
+
     public static void main(String[] args) throws FileNotFoundException, IOException  
     {
-        CSVReader csvReader = new CSVReader(new FileReader("C:\\Users\\ARAVIND\\Downloads\\input.csv"));
-        CSVWriter csvWriter = new CSVWriter(new FileWriter("C:\\Users\\ARAVIND\\Downloads\\output.csv"));
-     
+        String in = args[0];
+        String out= args[1];
+        int topn=Integer.parseInt(args[2]);
+        int botn=Integer.parseInt(args[3]);
+        
+        
+        CSVReader csvReader = new CSVReader(new FileReader(in));  //Initializing the reader and writer files.
+        CSVWriter csvWriter = new CSVWriter(new FileWriter(out));
+        
         ArrayList stud_data;
-        
-        stud_data=PrintAverage(csvReader);
- 
-        Data_Sort(csvWriter,stud_data);
+        stud_data=PrintAverage(csvReader); //Function to print average
+        Data_Sort(csvWriter,stud_data);   //Function to sort the file
         
         
-        CSVReader csvReadr = new CSVReader(new FileReader("C:\\Users\\ARAVIND\\Downloads\\output.csv"));
+        CSVReader csvReadr = new CSVReader(new FileReader(out));
+        TopN(csvReadr,topn);//Function to print top N student
         
-        TopN(csvReadr);
-        
-        CSVReader csvRead = new CSVReader(new FileReader("C:\\Users\\ARAVIND\\Downloads\\output.csv"));
-
-        BotN(csvRead);
-     
-        
+        CSVReader csvRead = new CSVReader(new FileReader(out));
+        BotN(csvRead,10,botn);//Function to print bottom N students
     } 
 }     
     

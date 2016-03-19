@@ -33,7 +33,7 @@ class   MarksComparator implements Comparator<Student> {
 
 public class JavaApplication5 {
     
-    
+    static int tot_stud;
     
     public static ArrayList PrintAverage(CSVReader csvReader) throws IOException
     {
@@ -66,6 +66,8 @@ public class JavaApplication5 {
               
               stud_data.add(new Student(row[0],row[1],row[2],row[3],row[4],tot,avrg));
         }
+        
+        tot_stud=count;
         
         avg1/=count;
         avg2/=count;
@@ -118,7 +120,7 @@ public class JavaApplication5 {
         csvReadr.close();
     }
     
-    public static void BotN(CSVReader csvRead,int tot, int n) throws IOException
+    public static void BotN(CSVReader csvRead, int n) throws IOException
     {
       int count=0;
       
@@ -130,7 +132,7 @@ public class JavaApplication5 {
         
         while((row = csvRead.readNext()) != null) 
         {
-             if(count>=(tot-n))
+             if(count>=(tot_stud-n))
                  System.out.println(row[0]+" "+row[1]+" "+row[2]+" "+row[3]+" "+row[4]+" "+row[5]+" "+
                          row[6]);
              count++;
@@ -159,7 +161,7 @@ public class JavaApplication5 {
         TopN(csvReadr,topn);//Function to print top N student
         
         CSVReader csvRead = new CSVReader(new FileReader(out));
-        BotN(csvRead,10,botn);//Function to print bottom N students
+        BotN(csvRead,botn);//Function to print bottom N students
     } 
 }     
     
